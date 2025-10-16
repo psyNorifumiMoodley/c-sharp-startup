@@ -37,7 +37,7 @@ public class CustomerController : ControllerBase
     }
 
     [HttpPost]
-    public IActionResult SaveCustomer(CustomerRequest customerRequest)
+    public async Task<IActionResult> SaveCustomer(CustomerRequest customerRequest)
     {
         var customerEntity = new Customer()
         {
@@ -46,7 +46,38 @@ public class CustomerController : ControllerBase
         };
 
         context.Customers.Add(customerEntity);
-        context.SaveChanges();
+        await context.SaveChangesAsync();
         return Ok(customerEntity);
+    }
+
+    [HttpDelete]
+    public async Task<IActionResult> DeleteCustomer(Guid customerId)
+    {
+        context.Customers.Remove(context.Customers.Find(customerId));
+        await context.SaveChangesAsync();
+        return Ok("Deleted Customer");
+    }
+    
+    [HttpPatch]
+    public async Task<IActionResult> UpdateCustomer(CustomerRequest customerRequest,  Guid customerId)
+    {
+        Customer updatedCustomer = new Customer()
+        {
+            FirstName = customerRequest.FirstName,
+            LastName = customerRequest.LastName,
+            Id = customerId
+        };
+        context.Customers.Update(updatedCustomer);  //unlike spring, you have to use update instead of save because otherwise it will try to create a new entry with the same primary key
+        await context.SaveChangesAsync();
+        return Ok(DtoMapper.ToCustomerResponse(updatedCustomer));
+    }
+
+    [HttpGet("{customerId}")]
+    public IActionResult GetCustomerById(Guid customerId)
+    {
+        var customer = context.Customers
+            .Include(c => c.Products)
+            .First(c => c.Id == customerId);
+        return Ok(DtoMapper.ToCustomerResponse(customer));
     }
 }
