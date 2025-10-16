@@ -1,7 +1,10 @@
 ﻿using FirstApp.Data;
 using FirstApp.Models;
 using FirstApp.Models.Enitities;
+using FirstApp.Models.Mapper;
+using FirstApp.Models.Response;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 
 namespace FirstApp.Controllers;
@@ -21,8 +24,16 @@ public class CustomerController : ControllerBase
     [HttpGet]
     public IActionResult GetAllCustomers()
     {
-        List<Customer> allCustomers = context.Customers.ToList();
-        return Ok(allCustomers);
+        List<Customer> allCustomers = context.Customers
+            .Include(c => c.Products) // putting "Includes" puts a join on the tables
+            .ToList(); 
+        List<CustomerResponse> allCustomerResponses = new List<CustomerResponse>();
+        foreach (Customer customer in allCustomers)
+        {
+            Console.WriteLine(customer.Products.Count);
+            allCustomerResponses.Add(DtoMapper.ToCustomerResponse(customer));
+        }
+        return Ok(allCustomerResponses);
     }
 
     [HttpPost]
