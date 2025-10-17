@@ -1,4 +1,6 @@
-﻿namespace FirstApp.Models.Response;
+﻿using FirstApp.Models.Enitities;
+
+namespace FirstApp.Models.Response;
 
 public class CustomerResponse
 {
@@ -8,5 +10,5 @@ public class CustomerResponse
     
     public required string LastName { get; set; }
 
-    public List<ProductResponse> Products { get; set; }
+    public List<CartResponse> CartResponses { get; set; }
 }

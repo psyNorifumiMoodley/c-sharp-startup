@@ -5,6 +5,7 @@ using FirstApp.Models.Mapper;
 using FirstApp.Models.Response;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 
 namespace FirstApp.Controllers;
 
@@ -19,58 +20,59 @@ public class ProductController : ControllerBase
         this.context = context;
     }
     
-    [HttpPost("{customerId}")]
-    public async Task<IActionResult> SaveProduct(Guid customerId, ProductRequest productRequest)
+    [HttpPost]
+    public IActionResult Post(ProductRequest productRequest)
     {
-        var productEntity = new Product()
+        Product product = new Product()
         {
             ProductName = productRequest.ProductName,
-            PricePerUnit = productRequest.PricePerUnit,
-            Customer = context.Customers.Find(customerId)
+            PricePerUnit = productRequest.PricePerUnit
         };
-        context.Products.Add(productEntity);
-        await context.SaveChangesAsync();
-
-        ProductResponse productResponse = DtoMapper.ToProductResponse(productEntity);
-        return Ok(productResponse);
-    }
-
-    [HttpGet("{customerId}")]
-    public IActionResult GetProductsForCustomer(Guid customerId)
-    {
-        List<Product> products = context.Products
-            .Include(p => p.Customer)
-            .Where(p => p.Customer.Id == customerId)
-            .ToList();
-        List<ProductResponse> productResponses = new List<ProductResponse>();
-        foreach (Product product in products)
-        {
-            productResponses.Add(DtoMapper.ToProductResponse(product));
-        }
-        return Ok(productResponses);
+        context.Products.Add(product);
+        context.SaveChanges();
+        return Ok(DtoMapper.ToProductResponse(product));
     }
     
-    public async Task<IActionResult> TransactionTest()
+    [HttpGet]
+    public IActionResult GetAllProducts()
     {
-        var transaction = context.Database.BeginTransaction();
-        try
-        {
-            context.Customers.Add(new Customer()
-            {
-                FirstName = "Transaction",
-                LastName = "Test"
-            });
-            
-            context.SaveChanges();              // Waits for database operation to finish
-            await context.SaveChangesAsync();   // Frees up the thread while waiting for the database to respond (preferred)
-            
-            transaction.Commit();
-        }
-        catch (Exception e)
-        {
-            transaction.Rollback();
-            return BadRequest("error in transaction");
-        }
-        return Ok();
+        return Ok(context.Products.ToList());
     }
+    
+    [HttpGet("{id}")]
+    public IActionResult GetProductById(Guid id)
+    {
+        Product? product = context.Products.Find(id);
+        if (product == null)
+        {
+            return NotFound("Product not found");
+        }
+
+        return Ok(product);
+
+    }
+    
+    // public async Task<IActionResult> TransactionTest()
+    // {
+    //     var transaction = context.Database.BeginTransaction();
+    //     try
+    //     {
+    //         context.Customers.Add(new Customer()
+    //         {
+    //             FirstName = "Transaction",
+    //             LastName = "Test"
+    //         });
+    //         
+    //         context.SaveChanges();              // Waits for database operation to finish
+    //         await context.SaveChangesAsync();   // Frees up the thread while waiting for the database to respond (preferred)
+    //         
+    //         transaction.Commit();
+    //     }
+    //     catch (Exception e)
+    //     {
+    //         transaction.Rollback();
+    //         return BadRequest("error in transaction");
+    //     }
+    //     return Ok();
+    // }
 }
