@@ -37,10 +37,14 @@ public class CartController: ControllerBase
     public IActionResult GetCart(Guid customerId)
     {
         List<Cart> carts = context.Carts
-            .Include(i => i.Items)
             .Include(c => c.Customer)
+            .Include(i => i.Items).ThenInclude(i => i.Product)
             .Where(c => c.Customer.Id == customerId)
             .ToList();
+        foreach (Cart cart in carts)
+        {
+            Console.WriteLine(cart.Items.Count);    
+        }
         return Ok(DtoMapper.ToCartResponseList(carts));
     }
     

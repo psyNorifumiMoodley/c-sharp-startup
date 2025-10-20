@@ -26,6 +26,7 @@ public class CustomerController : ControllerBase
     {
         List<Customer> allCustomers = context.Customers
             .Include(c => c.Carts) // putting "Includes" puts a join on the tables
+            .ThenInclude(c => c.Items).ThenInclude(i => i.Product)
             .ToList(); 
         List<CustomerResponse> allCustomerResponses = new List<CustomerResponse>();
         foreach (Customer customer in allCustomers)
@@ -77,6 +78,7 @@ public class CustomerController : ControllerBase
     {
         var customer = context.Customers
             .Include(c => c.Carts)
+            .ThenInclude(c => c.Items).ThenInclude(i => i.Product)
             .First(c => c.Id == customerId);
         return Ok(DtoMapper.ToCustomerResponse(customer));
     }
