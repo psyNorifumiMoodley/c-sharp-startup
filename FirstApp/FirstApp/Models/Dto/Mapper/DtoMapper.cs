@@ -9,7 +9,6 @@ public class DtoMapper
     {
         ProductResponse response = new ProductResponse()
         {
-            CustomerId = product.Customer.Id,
             PricePerUnit = product.PricePerUnit,
             ProductName = product.ProductName
         };
@@ -18,15 +17,35 @@ public class DtoMapper
     
     public static CustomerResponse ToCustomerResponse(Customer customer)
     {
-        Console.WriteLine(customer.Products.Count);
         CustomerResponse response = new CustomerResponse()
         {
             FirstName = customer.FirstName,
             LastName = customer.LastName,
             Id = customer.Id,
-            Products = ToProductResponseList(customer.Products)
+            CartResponses = ToCartResponseList(customer.Carts)
         };
         return response;
+    }
+
+    public static List<CartResponse> ToCartResponseList(List<Cart> customerCarts)
+    {
+        List<CartResponse> cartResponses = new List<CartResponse>();
+        foreach (Cart customer in customerCarts)
+        {
+            cartResponses.Add(ToCartResponse(customer));
+        }
+        return cartResponses;
+    }
+
+    public static CartResponse ToCartResponse(Cart cart)
+    {
+        CartResponse cartResponse = new CartResponse()
+        {
+            Id = cart.Id,
+            CartName = cart.CartName,
+            Items = ToItemResponseList(cart.Items)
+        };
+        return cartResponse;
     }
 
     private static List<ProductResponse> ToProductResponseList(ICollection<Product> customerProducts)
@@ -37,5 +56,24 @@ public class DtoMapper
             productResponses.Add(ToProductResponse(product));
         }
         return productResponses;
+    }
+
+    public static List<ItemResponse> ToItemResponseList(List<Item> customerItems)
+    {
+        List<ItemResponse> responses = new List<ItemResponse>();
+        foreach (Item item in customerItems)
+        {
+            responses.Add(ToItemResponse(item));
+        }
+        return responses;
+    }
+    public static ItemResponse ToItemResponse(Item item)
+    {
+        ItemResponse response = new ItemResponse()
+        {
+            Product = ToProductResponse(item.Product),
+            Quantity = item.Quantity
+        };
+        return response;
     }
 }

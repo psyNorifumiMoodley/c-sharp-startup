@@ -25,12 +25,13 @@ public class CustomerController : ControllerBase
     public IActionResult GetAllCustomers()
     {
         List<Customer> allCustomers = context.Customers
-            .Include(c => c.Products) // putting "Includes" puts a join on the tables
+            .Include(c => c.Carts) // putting "Includes" puts a join on the tables
+            .ThenInclude(c => c.Items).ThenInclude(i => i.Product)
             .ToList(); 
         List<CustomerResponse> allCustomerResponses = new List<CustomerResponse>();
         foreach (Customer customer in allCustomers)
         {
-            Console.WriteLine(customer.Products.Count);
+            Console.WriteLine(customer.Carts.Count);
             allCustomerResponses.Add(DtoMapper.ToCustomerResponse(customer));
         }
         return Ok(allCustomerResponses);
@@ -76,7 +77,8 @@ public class CustomerController : ControllerBase
     public IActionResult GetCustomerById(Guid customerId)
     {
         var customer = context.Customers
-            .Include(c => c.Products)
+            .Include(c => c.Carts)
+            .ThenInclude(c => c.Items).ThenInclude(i => i.Product)
             .First(c => c.Id == customerId);
         return Ok(DtoMapper.ToCustomerResponse(customer));
     }

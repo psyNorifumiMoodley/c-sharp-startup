@@ -6,5 +6,4 @@ public class ProductResponse
 
     public required float PricePerUnit { get; set; }
 
-    public Guid CustomerId { get; set; }
 }
