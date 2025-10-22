@@ -1,4 +1,4 @@
-﻿using FirstApp.Models.Enitities;
+﻿using FirstApp.Models.Entities;
 using Microsoft.EntityFrameworkCore;
 
 namespace FirstApp.Data;

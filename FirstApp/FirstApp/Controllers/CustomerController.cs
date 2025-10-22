@@ -1,6 +1,6 @@
 ﻿using FirstApp.Data;
 using FirstApp.Models;
-using FirstApp.Models.Enitities;
+using FirstApp.Models.Entities;
 using FirstApp.Models.Mapper;
 using FirstApp.Models.Response;
 using Microsoft.AspNetCore.Mvc;
@@ -40,10 +40,16 @@ public class CustomerController : ControllerBase
     [HttpPost]
     public async Task<IActionResult> SaveCustomer(CustomerRequest customerRequest)
     {
+        // if (!ModelState.IsValid) //not needed
+        // {
+        //     return BadRequest(ModelState);
+        // }
+        
         var customerEntity = new Customer()
         {
             FirstName = customerRequest.FirstName,
-            LastName = customerRequest.LastName
+            LastName = customerRequest.LastName,
+            Age = customerRequest.Age
         };
 
         context.Customers.Add(customerEntity);
@@ -66,6 +72,7 @@ public class CustomerController : ControllerBase
         {
             FirstName = customerRequest.FirstName,
             LastName = customerRequest.LastName,
+            Age = customerRequest.Age,
             Id = customerId
         };
         context.Customers.Update(updatedCustomer);  //unlike spring, you have to use update instead of save because otherwise it will try to create a new entry with the same primary key

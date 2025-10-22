@@ -3,6 +3,7 @@ using System;
 using FirstApp.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace FirstApp.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20251022085214_Validation-Migration")]
+    partial class ValidationMigration
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -40,7 +43,7 @@ namespace FirstApp.Migrations
 
                     b.HasIndex("CustomerId");
 
-                    b.ToTable("cart");
+                    b.ToTable("Carts");
                 });
 
             modelBuilder.Entity("FirstApp.Models.Enitities.Customer", b =>
@@ -64,7 +67,7 @@ namespace FirstApp.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("customer");
+                    b.ToTable("Customers");
                 });
 
             modelBuilder.Entity("FirstApp.Models.Enitities.Item", b =>
@@ -88,7 +91,7 @@ namespace FirstApp.Migrations
 
                     b.HasIndex("ProductId");
 
-                    b.ToTable("item");
+                    b.ToTable("Items");
                 });
 
             modelBuilder.Entity("FirstApp.Models.Enitities.Product", b =>
@@ -107,7 +110,7 @@ namespace FirstApp.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("product");
+                    b.ToTable("Products");
                 });
 
             modelBuilder.Entity("FirstApp.Models.Enitities.Cart", b =>

@@ -1,14 +1,11 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
-namespace FirstApp.Models.Enitities;
+namespace FirstApp.Models.Entities;
 
-public class Product
+[Table("product")]
+public class Product : ProductRequest
 {
     [Key]
     public Guid Id { get; set; }
-
-    public required string ProductName { get; set; }
-
-    public required float PricePerUnit { get; set; }
-
 }

@@ -1,4 +1,4 @@
-﻿using FirstApp.Models.Enitities;
+﻿using FirstApp.Models.Entities;
 using FirstApp.Models.Response;
 
 namespace FirstApp.Models.Mapper;
@@ -21,6 +21,7 @@ public class DtoMapper
         {
             FirstName = customer.FirstName,
             LastName = customer.LastName,
+            Age = customer.Age,
             Id = customer.Id,
             CartResponses = ToCartResponseList(customer.Carts)
         };

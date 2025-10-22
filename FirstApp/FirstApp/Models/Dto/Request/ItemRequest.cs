@@ -1,6 +1,4 @@
-﻿using FirstApp.Models.Enitities;
-
-namespace FirstApp.Models;
+﻿namespace FirstApp.Models;
 
 public class ItemRequest
 {

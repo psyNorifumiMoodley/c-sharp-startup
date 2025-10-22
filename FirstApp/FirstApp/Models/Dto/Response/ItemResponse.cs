@@ -1,6 +1,4 @@
-﻿using FirstApp.Models.Enitities;
-
-namespace FirstApp.Models.Response;
+﻿namespace FirstApp.Models.Response;
 
 public class ItemResponse
 {

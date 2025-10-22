@@ -1,6 +1,6 @@
 ﻿using FirstApp.Data;
 using FirstApp.Models;
-using FirstApp.Models.Enitities;
+using FirstApp.Models.Entities;
 using FirstApp.Models.Mapper;
 using FirstApp.Models.Response;
 using Microsoft.AspNetCore.Mvc;

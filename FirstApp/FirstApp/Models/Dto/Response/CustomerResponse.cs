@@ -1,6 +1,4 @@
-﻿using FirstApp.Models.Enitities;
-
-namespace FirstApp.Models.Response;
+﻿namespace FirstApp.Models.Response;
 
 public class CustomerResponse
 {
@@ -10,5 +8,6 @@ public class CustomerResponse
     
     public required string LastName { get; set; }
 
+    public required int Age { get; set; }
     public List<CartResponse> CartResponses { get; set; }
 }
