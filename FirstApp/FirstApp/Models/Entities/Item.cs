@@ -1,6 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using FirstApp.Models.Entities;
+using FirstApp.Models.Validators;
 
 namespace FirstApp.Models.Entities;
 
@@ -9,12 +10,12 @@ public class Item
 {
     [Key]
     public Guid Id { get; set; }
-    [Required(ErrorMessage = "Product Name is required")]
-    public Product Product { get; set; }
     
     [Required(ErrorMessage = "Quantity is required")]
-    [Range(1, int.MaxValue,  ErrorMessage = "Quantity must be greater than 0")]
+    [MinValue(0, ErrorMessage = "Quantity must be greater than 0")]
     public int Quantity { get; set; }
+    
+    public Product Product { get; set; }
     
     public Cart Cart { get; set; }
 }

@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using FirstApp.Models.Validators;
 
 namespace FirstApp.Models;
 
@@ -9,6 +10,6 @@ public class ProductRequest
     public required string ProductName { get; set; }
     
     [Required(ErrorMessage = "Price per unit is required")]
-    [Range(0.01, float.MaxValue, ErrorMessage = "Price must be above 0.01 ")]
+    [GreaterThanZero(ErrorMessage = "Price must be above 0")]
     public required float PricePerUnit { get; set; }
 }
