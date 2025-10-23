@@ -44,7 +44,6 @@ public class CustomerController : ControllerBase
         // {
         //     return BadRequest(ModelState);
         // }
-        
         var customerEntity = new Customer()
         {
             FirstName = customerRequest.FirstName,

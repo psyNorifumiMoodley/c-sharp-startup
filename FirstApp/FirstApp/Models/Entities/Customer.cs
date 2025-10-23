@@ -8,7 +8,7 @@ public class Customer
     [Key]
     public Guid Id { get; set; } //global unique Id
     
-    [Required(AllowEmptyStrings =  false, ErrorMessage = "FirstName is required")]      //Allow Empty Strings is set to false by default
+    [Required(AllowEmptyStrings =  false, ErrorMessage = "FirstName is required")] //Allow Empty Strings is set to false by default
     [StringLength(50, MinimumLength = 2, ErrorMessage = "FirstName must be between 2 and 50 characters")]
     public required string FirstName { get; set; }
     

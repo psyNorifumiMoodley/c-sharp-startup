@@ -16,5 +16,4 @@ public class CustomerRequest
     [Required]
     [Range(10, 99, ErrorMessage = "Must be older than 10yrs")]
     public required int Age { get; set; }
-    
 }
